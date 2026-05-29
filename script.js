@@ -1,5 +1,37 @@
 // Premium Jewelry Interactions & Utilities
 
+window.toggleMobileMenu = function toggleMobileMenu(event) {
+    if (event) {
+        event.preventDefault();
+        event.stopPropagation();
+    }
+
+    const menuToggle = document.querySelector('.menu-toggle');
+    const navLinks = document.querySelector('.nav-links');
+
+    if (!menuToggle || !navLinks) return;
+
+    const isOpen = navLinks.classList.toggle('is-open');
+    menuToggle.classList.toggle('is-open', isOpen);
+    menuToggle.setAttribute('aria-expanded', String(isOpen));
+    menuToggle.setAttribute('aria-label', isOpen ? 'Close navigation menu' : 'Open navigation menu');
+    document.documentElement.setAttribute('data-menu-open', String(isOpen));
+};
+
+document.documentElement.setAttribute('data-menu-script', 'ready');
+
+window.toggleMobileSubmenu = function toggleMobileSubmenu(event) {
+    if (!window.matchMedia('(max-width: 768px)').matches) return;
+
+    event.preventDefault();
+    event.stopPropagation();
+
+    const dropdown = event.currentTarget.closest('.dropdown');
+    if (dropdown) {
+        dropdown.classList.toggle('is-open');
+    }
+};
+
 document.addEventListener('DOMContentLoaded', () => {
 
     // 1. Loading Screen
@@ -68,6 +100,66 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // 5. Mobile hamburger menu and submenus
+    const navbar = document.querySelector('.navbar');
+    const navLinks = document.querySelector('.nav-links');
+
+    if (navbar && navLinks) {
+        let menuToggle = navbar.querySelector('.menu-toggle');
+
+        if (!menuToggle) {
+            menuToggle = document.createElement('button');
+            menuToggle.className = 'menu-toggle';
+            menuToggle.type = 'button';
+            menuToggle.innerHTML = '<span></span><span></span><span></span>';
+            navbar.insertBefore(menuToggle, navLinks);
+        }
+
+        menuToggle.setAttribute('aria-label', 'Open navigation menu');
+        menuToggle.setAttribute('aria-expanded', 'false');
+
+        const closeMenu = () => {
+            menuToggle.classList.remove('is-open');
+            navLinks.classList.remove('is-open');
+            menuToggle.setAttribute('aria-expanded', 'false');
+            menuToggle.setAttribute('aria-label', 'Open navigation menu');
+        };
+
+        if (!menuToggle.getAttribute('onclick')) {
+            menuToggle.addEventListener('click', window.toggleMobileMenu);
+        }
+
+        navLinks.querySelectorAll('.dropdown > a').forEach(link => {
+            if (!link.getAttribute('onclick')) {
+                link.addEventListener('click', (event) => {
+                    if (window.matchMedia('(max-width: 768px)').matches) {
+                        window.toggleMobileSubmenu(event);
+                    }
+                });
+            }
+        });
+
+        navLinks.querySelectorAll('a[href]:not([href="#"])').forEach(link => {
+            link.addEventListener('click', () => {
+                if (window.matchMedia('(max-width: 768px)').matches) {
+                    closeMenu();
+                }
+            });
+        });
+
+        document.addEventListener('click', (event) => {
+            if (!navbar.contains(event.target)) {
+                closeMenu();
+            }
+        });
+
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape') {
+                closeMenu();
+            }
+        });
+    }
+
 
 
     // Navbar Scroll Effect
@@ -96,11 +188,11 @@ function toggleMetalType() {
 
     if (isGold) {
         purityGroup.style.display = 'block';
-        rateLabel.innerText = 'Live Rate per 10g (₹)';
+        rateLabel.innerText = 'Live Rate per 10g (Rs.)';
         rateInput.value = 72000;
     } else {
         purityGroup.style.display = 'none';
-        rateLabel.innerText = 'Live Rate per 1kg (₹)';
+        rateLabel.innerText = 'Live Rate per 1kg (Rs.)';
         rateInput.value = 85000;
     }
     liveCalculate();
@@ -132,11 +224,11 @@ function liveCalculate() {
 
     const total = subtotal + gst;
 
-    document.getElementById('calcTotal').innerText = '₹ ' + total.toLocaleString('en-IN', { maximumFractionDigits: 0 });
+    document.getElementById('calcTotal').innerText = 'Rs. ' + total.toLocaleString('en-IN', { maximumFractionDigits: 0 });
 
     // EMI Calc (mocking 6 months no cost + minimal fee)
     const emi = total / 6;
-    document.getElementById('calcEmi').innerText = '₹ ' + emi.toLocaleString('en-IN', { maximumFractionDigits: 0 });
+    document.getElementById('calcEmi').innerText = 'Rs. ' + emi.toLocaleString('en-IN', { maximumFractionDigits: 0 });
 }
 
 

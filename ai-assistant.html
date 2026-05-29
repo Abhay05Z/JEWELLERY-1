@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI Assistant | Shri Darshan Jewellers</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles.css?v=hamburger3">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body data-theme="light">
@@ -17,10 +17,15 @@
                     <div class="logo-hi" style="font-size: 0.8rem; letter-spacing: 2px; color: var(--text-muted); font-family: 'Noto Sans Devanagari', sans-serif; margin-top: 5px;">श्री दर्शन ज्वेलर्स</div>
                 </a>
             </div>
-            <ul class="nav-links">
+                        <button class="menu-toggle" type="button" onclick="toggleMobileMenu(event)" aria-label="Open navigation menu" aria-expanded="false">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+<ul class="nav-links">
                 <li><a href="index.html">Home</a></li>
                 <li class="dropdown">
-                    <a href="#">Collections <i class="fas fa-chevron-down" style="font-size: 0.8em; margin-left: 5px;"></i></a>
+                    <a href="#" onclick="toggleMobileSubmenu(event)">Collections <i class="fas fa-chevron-down" style="font-size: 0.8em; margin-left: 5px;"></i></a>
                     <div class="dropdown-content">
                         <a href="gold.html">Gold Jewellery</a>
                         <a href="silver.html">Silver Artifacts</a>
@@ -31,7 +36,7 @@
                     </div>
                 </li>
                 <li class="dropdown">
-                    <a href="#">Explore <i class="fas fa-chevron-down" style="font-size: 0.8em; margin-left: 5px;"></i></a>
+                    <a href="#" onclick="toggleMobileSubmenu(event)">Explore <i class="fas fa-chevron-down" style="font-size: 0.8em; margin-left: 5px;"></i></a>
                     <div class="dropdown-content">
                         <a href="about.html">About Us</a>
                         <a href="gallery.html">Gallery</a>
@@ -40,7 +45,7 @@
                     </div>
                 </li>
                 <li class="dropdown">
-                    <a href="#">Services <i class="fas fa-chevron-down" style="font-size: 0.8em; margin-left: 5px;"></i></a>
+                    <a href="#" onclick="toggleMobileSubmenu(event)">Services <i class="fas fa-chevron-down" style="font-size: 0.8em; margin-left: 5px;"></i></a>
                     <div class="dropdown-content">
                         <a href="custom-order.html">Custom Orders</a>
                         <a href="calculator.html">Price Calculator</a>
@@ -127,6 +132,6 @@
             &copy; 2026 Shri Darshan Jewellers. Premium Crafted Experience. All 15 Pages Connected.
         </div>
     </footer>
-    <script src="script.js"></script>
+    <script src="script.js?v=hamburger5"></script>
 </body>
 </html>
